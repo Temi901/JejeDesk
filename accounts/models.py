@@ -8,6 +8,10 @@ class Business(models.Model):
     address = models.CharField(max_length=255, blank=True)
     currency = models.CharField(max_length=3, default="NGN")
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "businesses"
 
     def __str__(self):
         return self.name
