@@ -1,6 +1,13 @@
-﻿<h1>Welcome, {{ user.first_name }}</h1>
-<p>Business: {{ user.business.name }}</p>
-<form method="post" action="{% url 'logout' %}">
-  {% csrf_token %}
-  <button type="submit">Log out</button>
-</form>
+﻿{% extends "app_base.html" %}
+{% block title %}Dashboard · JejeDesk{% endblock %}
+{% block content %}
+<h1>Good day, {{ user.first_name|default:user.username }}</h1>
+<p class="muted">{{ user.business.name }}</p>
+<div class="cards">
+  <div class="card"><div class="label">Sales today</div><div class="value">&#8358;0</div></div>
+  <div class="card"><div class="label">Expenses today</div><div class="value">&#8358;0</div></div>
+  <div class="card"><div class="label">Profit today</div><div class="value">&#8358;0</div></div>
+  <div class="card"><div class="label">Low-stock items</div><div class="value">0</div></div>
+</div>
+<div class="card"><p class="muted" style="margin:0">No sales yet. Once products and the sales screen are built, your real numbers will appear here.</p></div>
+{% endblock %}

@@ -1,0 +1,13 @@
+﻿{% extends "base.html" %}
+{% block body %}
+<div class="auth">
+  <section class="auth-brand">
+    <div class="brand">JejeDesk</div>
+    <h1>Know your stock, sales and profit.</h1>
+    <p>One place to run your shop, built for small businesses.</p>
+  </section>
+  <section class="auth-form">
+    <div class="auth-box">{% block form_content %}{% endblock %}</div>
+  </section>
+</div>
+{% endblock %}

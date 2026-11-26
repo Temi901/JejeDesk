@@ -1,7 +1,11 @@
-﻿<h1>Log in</h1>
+﻿{% extends "auth_base.html" %}
+{% block title %}Log in · JejeDesk{% endblock %}
+{% block form_content %}
+<h2>Welcome back</h2>
 <form method="post">
   {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log in</button>
+  {% include "partials/form_fields.html" %}
+  <button class="btn" type="submit">Log in</button>
 </form>
-<p>New here? <a href="{% url 'signup' %}">Create a business account</a></p>
+<p class="muted">New here? <a class="link" href="{% url 'signup' %}">Create a business account</a></p>
+{% endblock %}

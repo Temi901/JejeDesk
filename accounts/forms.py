@@ -1,4 +1,5 @@
 ﻿from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.db import transaction
@@ -7,11 +8,26 @@ from .models import Business, User
 
 
 class SignupForm(forms.Form):
-    business_name = forms.CharField(max_length=150)
-    full_name = forms.CharField(max_length=150)
-    email = forms.EmailField()
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_confirm = forms.CharField(widget=forms.PasswordInput)
+    business_name = forms.CharField(
+        max_length=150, label="Business name",
+        widget=forms.TextInput(attrs={"autocomplete": "off"}),
+    )
+    full_name = forms.CharField(
+        max_length=150, label="Your name",
+        widget=forms.TextInput(attrs={"autocomplete": "name"}),
+    )
+    email = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={"autocomplete": "email"}),
+    )
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+    )
+    password_confirm = forms.CharField(
+        label="Confirm password",
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+    )
 
     def clean_email(self):
         email = self.cleaned_data["email"].lower()
@@ -45,3 +61,13 @@ class SignupForm(forms.Form):
                 role=User.Role.OWNER,
             )
         return user
+
+
+class LoginForm(AuthenticationForm):
+    username = forms.EmailField(
+        label="Email",
+        widget=forms.EmailInput(attrs={"autofocus": True, "autocomplete": "username"}),
+    )
+
+    def clean_username(self):
+        return self.cleaned_data["username"].lower()

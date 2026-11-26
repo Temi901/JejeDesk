@@ -1,0 +1,23 @@
+﻿{% extends "base.html" %}
+{% block body %}
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">JejeDesk</div>
+    <a href="{% url 'dashboard' %}" class="nav {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a>
+    <span class="nav soon">New Sale</span>
+    <span class="nav soon">Products</span>
+    <span class="nav soon">Customers</span>
+    <span class="nav soon">Expenses</span>
+    <span class="nav soon">Reports</span>
+    <span class="nav soon">Staff</span>
+    <div class="who">
+      {{ user.business.name|default:"No business" }}<br>{{ user.get_role_display }}
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="linkbtn" type="submit">Log out</button>
+      </form>
+    </div>
+  </aside>
+  <main class="main">{% block content %}{% endblock %}</main>
+</div>
+{% endblock %}
