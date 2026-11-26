@@ -1,0 +1,13 @@
+﻿{% extends "app_base.html" %}
+{% block title %}Add product · JejeDesk{% endblock %}
+{% block content %}
+<h1>Add product</h1>
+<p class="muted"><a class="link" href="{% url 'product_list' %}">Back to products</a></p>
+<div class="card" style="max-width:520px;margin-top:20px">
+  <form method="post">
+    {% csrf_token %}
+    {% include "partials/form_fields.html" %}
+    <button class="btn" type="submit">Save product</button>
+  </form>
+</div>
+{% endblock %}

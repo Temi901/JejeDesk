@@ -5,7 +5,7 @@
     <div class="brand">JejeDesk</div>
     <a href="{% url 'dashboard' %}" class="nav {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Dashboard</a>
     <span class="nav soon">New Sale</span>
-    <span class="nav soon">Products</span>
+    <a href="{% url 'product_list' %}" class="nav {% if '/products' in request.path %}active{% endif %}">Products</a>
     <span class="nav soon">Customers</span>
     <span class="nav soon">Expenses</span>
     <span class="nav soon">Reports</span>
@@ -21,3 +21,4 @@
   <main class="main">{% block content %}{% endblock %}</main>
 </div>
 {% endblock %}
+

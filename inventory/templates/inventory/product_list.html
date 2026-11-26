@@ -1,0 +1,30 @@
+﻿{% extends "app_base.html" %}
+{% block title %}Products · JejeDesk{% endblock %}
+{% block content %}
+<div class="page-head">
+  <div><h1>Products</h1><p class="muted">Every stock change is recorded</p></div>
+  {% if user.role == "owner" %}<a class="btn btn-inline" href="{% url 'product_create' %}">+ Add product</a>{% endif %}
+</div>
+<form method="get" class="search">
+  <label class="sr" for="q">Search products</label>
+  <input id="q" name="q" value="{{ q }}" placeholder="Search by name or code">
+</form>
+<div class="card">
+  <div class="table-wrap">
+    <table>
+      <tr><th>Product</th><th>Category</th><th>Price</th><th>In stock</th><th>Status</th></tr>
+      {% for p in products %}
+      <tr>
+        <td>{{ p.name }}</td>
+        <td>{{ p.category|default:"-" }}</td>
+        <td>&#8358;{{ p.selling_price|floatformat:"2g" }}</td>
+        <td>{{ p.stock_quantity }}</td>
+        <td>{% if p.is_low_stock %}<span class="badge lo">Low</span>{% else %}<span class="badge ok">In stock</span>{% endif %}</td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="5" class="muted">No products yet.</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}
