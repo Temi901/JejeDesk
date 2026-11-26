@@ -1,13 +1,14 @@
 ﻿from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.db import transaction
 from django.db.models import Q
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from accounts.decorators import owner_required
 
-from .forms import ProductForm
+from .forms import ProductForm, StockAdjustForm
 from .models import Product, StockMovement
-from .services import change_stock
+from .services import InsufficientStock, change_stock
 
 
 @login_required
@@ -44,3 +45,39 @@ def product_create(request):
     else:
         form = ProductForm(business=business)
     return render(request, "inventory/product_form.html", {"form": form})
+
+
+@login_required
+def product_detail(request, pk):
+    user = request.user
+    product = get_object_or_404(Product, pk=pk, business=user.business)
+    is_owner = user.role == user.Role.OWNER
+    if request.method == "POST":
+        if not is_owner:
+            raise PermissionDenied
+        form = StockAdjustForm(request.POST)
+        if form.is_valid():
+            qty = form.cleaned_data["quantity"]
+            reason = form.cleaned_data["reason"]
+            change = qty if reason == StockMovement.Reason.RESTOCK else -qty
+            try:
+                change_stock(
+                    product_id=product.id,
+                    business=user.business,
+                    change=change,
+                    reason=reason,
+                    user=user,
+                    note=form.cleaned_data["note"],
+                )
+            except InsufficientStock as error:
+                form.add_error("quantity", str(error))
+            else:
+                return redirect("product_detail", pk=product.id)
+    else:
+        form = StockAdjustForm()
+    movements = product.movements.select_related("created_by")[:50]
+    return render(
+        request,
+        "inventory/product_detail.html",
+        {"product": product, "form": form, "movements": movements, "is_owner": is_owner},
+    )

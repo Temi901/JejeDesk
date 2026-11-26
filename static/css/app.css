@@ -49,3 +49,5 @@ td{padding:12px 8px;border-bottom:1px solid #EEF1EE}
 .badge{padding:3px 10px;border-radius:99px;font-size:12px}
 .badge.ok{background:#E3F3EA;color:#0B5A41}
 .badge.lo{background:#FFF1D6;color:#7A4A00}
+.pos{color:#0B5A41;font-weight:500}
+.neg{color:#B3261E;font-weight:500}

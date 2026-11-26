@@ -15,7 +15,7 @@
       <tr><th>Product</th><th>Category</th><th>Price</th><th>In stock</th><th>Status</th></tr>
       {% for p in products %}
       <tr>
-        <td>{{ p.name }}</td>
+        <td><a class="link" href="{% url 'product_detail' p.id %}">{{ p.name }}</a></td>
         <td>{{ p.category|default:"-" }}</td>
         <td>&#8358;{{ p.selling_price|floatformat:"2g" }}</td>
         <td>{{ p.stock_quantity }}</td>
@@ -28,3 +28,4 @@
   </div>
 </div>
 {% endblock %}
+

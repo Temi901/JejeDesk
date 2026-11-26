@@ -32,3 +32,14 @@ class ProductForm(forms.ModelForm):
             if value is not None and value < 0:
                 self.add_error(name, "Must be zero or more.")
         return cleaned
+
+class StockAdjustForm(forms.Form):
+    reason = forms.ChoiceField(
+        choices=[
+            ("restock", "Restock (stock in)"),
+            ("damage", "Damaged or lost (stock out)"),
+        ],
+        label="What happened?",
+    )
+    quantity = forms.IntegerField(min_value=1, label="Quantity")
+    note = forms.CharField(max_length=255, required=False, label="Note (optional)")
